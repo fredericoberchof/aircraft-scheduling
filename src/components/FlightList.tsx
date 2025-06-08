@@ -24,7 +24,7 @@ const FlightList: React.FC<Props> = ({ onAddFlight, rotation = [] }) => {
 
   return (
     <div className="p-4 border-l border-gray-300 w-64 h-full overflow-y-auto bg-white">
-      <h2 className="text-lg text-center font-bold mb-4 text-gray-800">Available Flights</h2>
+      <h2 className="text-lg text-center font-bold mb-4 text-gray-800">Flights</h2>
       <ul className="space-y-3">
         {flights.map((flight) => {
           

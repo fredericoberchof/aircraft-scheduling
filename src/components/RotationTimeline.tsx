@@ -61,7 +61,15 @@ export default function RotationTimeline({ rotation }: Props) {
 
   return (
     <div className="border mt-4 p-2 rounded bg-gray-100">
-      <h3 className="text-sm font-medium mb-2">Rotation Timeline</h3>
+      <div className="flex items-center mb-2">
+        <h3 className="text-sm font-medium">Rotation Timeline</h3>
+        <span
+          className="ml-1 flex items-center justify-center w-3 h-3 rounded-full bg-blue-500 text-white text-xs font-bold cursor-default"
+          title="Hover over the colored blocks to see detailed information about the rotations."
+        >
+          i
+        </span>
+      </div>
 
       <div
         className="relative w-full mb-1 text-xs text-gray-600 px-4 select-none"
@@ -69,10 +77,8 @@ export default function RotationTimeline({ rotation }: Props) {
       >
         {hourMarkers.map((marker, idx) => {
           let transformStyle = "-translate-x-1/2"
-          if (idx === 0)
-            transformStyle = "translate-x-0"
-          else if (idx === hourMarkers.length - 1)
-            transformStyle = "-translate-x-full"
+          if (idx === 0) transformStyle = "translate-x-0"
+          else if (idx === hourMarkers.length - 1) transformStyle = "-translate-x-full"
 
           return (
             <div
@@ -81,12 +87,12 @@ export default function RotationTimeline({ rotation }: Props) {
               style={{ left: `${marker.positionPercent}%` }}
             >
               <span>{marker.label}</span>
-              <span
+              <div
                 className="block mt-1"
                 style={{
                   width: "1px",
-                  height: "8px",
-                  backgroundColor: "#93848",
+                  height: "10px",
+                  backgroundColor: "#6B7280",
                 }}
               />
             </div>
