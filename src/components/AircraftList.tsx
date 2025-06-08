@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
 import { Aircraft, Flight } from "../types/flight"
 import { getAircrafts } from "../services/api"
-import UtilizationBar from "./UtilizationBar"
 import { calculateUtilization } from "../utils/calculateUtilization"
+import UtilizationBar from "./UtilizationBar"
 
 type Props = {
   selectedAircraftId: string | null

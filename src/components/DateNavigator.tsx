@@ -1,5 +1,5 @@
 import { format } from "date-fns"
-import { enUS } from "date-fns/locale" // locale dos EUA
+import { enUS } from "date-fns/locale"
 
 interface Props {
   currentDate: Date
