@@ -1,4 +1,4 @@
-import { Flight } from "../types/flight"
+import { Flight } from "../types/aviationTypes"
 
 export const validateFlightAddition = (
   newFlight: Flight,

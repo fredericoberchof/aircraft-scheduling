@@ -1,4 +1,4 @@
-import { Flight } from "../types/flight"
+import { Flight } from "../types/aviationTypes"
 import { calculateUtilization, SECONDS_IN_DAY } from "./calculateUtilization"
 
 describe("calculateUtilization", () => {

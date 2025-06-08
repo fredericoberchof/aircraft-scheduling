@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Aircraft, Flight } from "../types/flight"
+import { Aircraft, Flight } from "../types/aviationTypes"
 import { getAircrafts } from "../services/api"
 import { calculateUtilization } from "../utils/calculateUtilization"
 import UtilizationBar from "./UtilizationBar"

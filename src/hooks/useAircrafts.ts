@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { getAircrafts } from "../services/api"
-import { Aircraft } from "../types/flight"
+import { Aircraft } from "../types/aviationTypes"
 
 export function useAircrafts() {
   const [aircrafts, setAircrafts] = useState<Aircraft[]>([])

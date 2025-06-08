@@ -1,5 +1,5 @@
 import React from "react"
-import { Flight } from "../types/flight"
+import { Flight } from "../types/aviationTypes"
 import { calculateUtilization } from "../utils/calculateUtilization"
 
 interface UtilizationBarProps {

@@ -1,6 +1,6 @@
 import { colors } from "../styles/colors"
-import { Flight } from "../types/flight"
-import { formatSeconds } from "../utils/formatTime"
+import { Flight } from "../types/aviationTypes"
+import { formatTime } from "../utils/formatTime"
 
 type Props = {
   rotation: Flight[]
@@ -71,6 +71,30 @@ export default function RotationTimeline({ rotation }: Props) {
         </span>
       </div>
 
+      <div className="flex justify-center items-center mb-4 gap-6">
+      <div className="flex items-center">
+          <div
+            className="w-4 h-4 rounded mr-2"
+            style={{ backgroundColor: colors.idle }}
+          ></div>
+          <span className="text-xs text-gray-600">Idle</span>
+        </div>
+        <div className="flex items-center">
+          <div
+            className="w-4 h-4 rounded mr-2"
+            style={{ backgroundColor: colors.scheduled }}
+          ></div>
+          <span className="text-xs text-gray-600">Scheduled</span>
+        </div>
+        <div className="flex items-center">
+          <div
+            className="w-4 h-4 rounded mr-2"
+            style={{ backgroundColor: colors.turnaround }}
+          ></div>
+          <span className="text-xs text-gray-600">Turnaround</span>
+        </div>
+      </div>
+
       <div
         className="relative w-full mb-1 text-xs text-gray-600 px-4 select-none"
         style={{ height: "20px" }}
@@ -92,7 +116,7 @@ export default function RotationTimeline({ rotation }: Props) {
                 style={{
                   width: "1px",
                   height: "10px",
-                  backgroundColor: "#6B7280",
+                  backgroundColor: "#000",
                 }}
               />
             </div>
@@ -118,9 +142,9 @@ export default function RotationTimeline({ rotation }: Props) {
                 width: `${widthPercent}%`,
                 backgroundColor,
               }}
-              title={`${block.type.toUpperCase()} - ${formatSeconds(
+              title={`${block.type.toUpperCase()} - ${formatTime(
                 block.start
-              )} → ${formatSeconds(block.end)}`}
+              )} → ${formatTime(block.end)}`}
             />
           )
         })}

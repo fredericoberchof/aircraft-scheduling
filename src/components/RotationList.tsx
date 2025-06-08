@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { Flight } from "../types/flight"
+import { Flight } from "../types/aviationTypes"
 import ConfirmationModal from "./ConfirmationModal"
 
 interface Props {
