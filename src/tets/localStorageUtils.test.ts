@@ -1,4 +1,4 @@
-import { getFromLocalStorage, removeFromLocalStorage, saveToLocalStorage } from "./localStorageUtils"
+import { getFromLocalStorage, removeFromLocalStorage, saveToLocalStorage } from "../utils/localStorageUtils"
 
 const localStorageMock = (() => {
   let store: Record<string, string> = {}

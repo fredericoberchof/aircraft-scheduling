@@ -7,6 +7,7 @@ import {
   saveToLocalStorage,
   getFromLocalStorage,
 } from "../utils/localStorageUtils"
+import { calculateUtilization } from "../utils/calculateUtilization"
 import AircraftList from "../components/AircraftList"
 import FlightList from "../components/FlightList"
 import RotationTimeline from "../components/RotationTimeline"
@@ -46,13 +47,13 @@ function Home() {
 
   const handleAddFlight = (flight: Flight) => {
     if (!selectedAircraftId) return
-
+  
     const error = validateFlightAddition(flight, rotation)
     if (error) {
       showMessage(error, "warning")
       return
     }
-
+  
     const updatedRotation = [...rotation, flight]
     setRotationsByDate((prev) => ({
       ...prev,
@@ -61,6 +62,15 @@ function Home() {
         [selectedAircraftId]: updatedRotation,
       },
     }))
+  
+    const utilization = calculateUtilization(updatedRotation)
+    const idleTime = 100 - utilization
+    if (idleTime > 50) {
+      showMessage(
+        `Warning: Aircraft has ${idleTime.toFixed(1)}% idle time. Consider optimizing the schedule.`,
+        "info"
+      )
+    }
   }
 
   const handleRemoveFlight = (flightIdent: string) => {
