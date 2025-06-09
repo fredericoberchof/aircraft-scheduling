@@ -1,5 +1,5 @@
-import { Flight } from "../types/aviationTypes"
-import { validateFlightAddition } from "../utils/rotationValidation"
+import { Flight } from "../../types/aviationTypes"
+import { validateFlightAddition } from "../../utils/rotationValidation"
 
 describe("validateFlightAddition", () => {
   const mockFlight = (origin: string, destination: string, departuretime: string, arrivaltime: string): Flight => ({

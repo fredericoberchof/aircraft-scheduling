@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react"
-import { Aircraft, Flight } from "../types/aviationTypes"
-import { getAircrafts } from "../services/api"
-import { calculateUtilization } from "../utils/calculateUtilization"
+import { Aircraft, Flight } from "../../types/aviationTypes"
+import { getAircrafts } from "../../services/api"
 import UtilizationBar from "./UtilizationBar"
-import SearchInput from "./SearchInput"
+import SearchInput from "../common/SearchInput"
 
 type Props = {
   selectedAircraftId: string | null

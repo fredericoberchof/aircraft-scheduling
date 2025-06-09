@@ -1,8 +1,8 @@
 import React, { useState } from "react"
-import { useFlights } from "../hooks/useFlights"
-import { Flight } from "../types/aviationTypes"
-import { formatTime } from "../utils/formatTime"
-import SearchInput from "./SearchInput"
+import { useFlights } from "../../hooks/useFlights"
+import { Flight } from "../../types/aviationTypes"
+import { formatTime } from "../../utils/formatTime"
+import SearchInput from "../common/SearchInput"
 
 interface Props {
   onAddFlight: (flight: Flight) => void

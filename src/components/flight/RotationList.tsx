@@ -1,6 +1,6 @@
 import React, { useState } from "react"
-import { Flight } from "../types/aviationTypes"
-import ConfirmationModal from "./ConfirmationModal"
+import { Flight } from "../../types/aviationTypes"
+import ConfirmationModal from "../common/ConfirmationModal"
 
 interface Props {
   rotation: Flight[]

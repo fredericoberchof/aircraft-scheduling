@@ -1,4 +1,4 @@
-import { useSnackbar } from "../hooks/useSnackbar"
+import { useSnackbar } from "../../hooks/useSnackbar"
 import {
   CheckCircleIcon,
   ExclamationCircleIcon,

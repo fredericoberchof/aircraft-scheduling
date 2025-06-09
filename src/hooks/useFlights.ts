@@ -5,7 +5,8 @@ import { Flight } from "../types/aviationTypes"
 export function useFlights() {
   const [flights, setFlights] = useState<Flight[]>([])
   const [loading, setLoading] = useState(true)
-
+  console.log("useFlights hook initialized", flights);
+  
   useEffect(() => {
     async function fetchFlights() {
       const data = await getFlights()
