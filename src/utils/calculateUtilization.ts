@@ -1,4 +1,4 @@
-import { Flight } from "../types/flight"
+import { Flight } from "../types/aviationTypes"
 
 export const SECONDS_IN_DAY = 86400
 const TURNAROUND_TIME = 20 * 60

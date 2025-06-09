@@ -23,14 +23,14 @@ const COLORS = {
 const Snackbar = () => {
   const { show, message, type } = useSnackbar()
 
-  if (!show || !message) return null
-
   return (
     <div
-      className={`fixed bottom-4 left-1/2 transform -translate-x-1/2 px-4 py-2 rounded shadow-lg z-50 flex items-center text-white transition-all ${COLORS[type]}`}
+      className={`fixed top-4 left-1/2 transform -translate-x-1/2 px-4 py-2 rounded shadow-lg z-50 flex items-center text-white transition-all duration-500 ease-in-out ${
+        COLORS[type]
+      } ${show ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'}`}
     >
       {ICONS[type]}
-      <span>{message}</span>
+      <span className="ml-2">{message}</span>
     </div>
   )
 }

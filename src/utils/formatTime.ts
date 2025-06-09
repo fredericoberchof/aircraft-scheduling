@@ -1,5 +1,9 @@
-export function formatSeconds(seconds: number) {
-    const hours = Math.floor(seconds / 3600)
-    const minutes = Math.floor((seconds % 3600) / 60)
-    return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`
-  }
+export const formatTime = (seconds: number) => {
+  const h = Math.floor(seconds / 3600)
+    .toString()
+    .padStart(2, "0")
+  const m = Math.floor((seconds % 3600) / 60)
+    .toString()
+    .padStart(2, "0")
+  return `${h}:${m}`
+}

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Flight } from '../types/flight'
+import { Flight } from '../types/aviationTypes'
 
 type RotationMap = {
   [aircraftId: string]: Flight[]

@@ -1,5 +1,5 @@
-import { Flight } from "../types/flight"
-import { calculateUtilization, SECONDS_IN_DAY } from "./calculateUtilization"
+import { Flight } from "../types/aviationTypes"
+import { calculateUtilization, SECONDS_IN_DAY } from "../utils/calculateUtilization"
 
 describe("calculateUtilization", () => {
   it("should return 0 for an empty rotation", () => {

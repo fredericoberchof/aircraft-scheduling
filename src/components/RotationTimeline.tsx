@@ -1,6 +1,6 @@
 import { colors } from "../styles/colors"
-import { Flight } from "../types/flight"
-import { formatSeconds } from "../utils/formatTime"
+import { Flight } from "../types/aviationTypes"
+import { formatTime } from "../utils/formatTime"
 
 type Props = {
   rotation: Flight[]
@@ -61,7 +61,39 @@ export default function RotationTimeline({ rotation }: Props) {
 
   return (
     <div className="border mt-4 p-2 rounded bg-gray-100">
-      <h3 className="text-sm font-medium mb-2">Rotation Timeline</h3>
+      <div className="flex items-center mb-2">
+        <h3 className="text-sm font-medium">Rotation Timeline</h3>
+        <span
+          className="ml-1 flex items-center justify-center w-3 h-3 rounded-full bg-blue-500 text-white text-xs font-bold cursor-default"
+          title="Hover over the colored blocks to see detailed information about the rotations."
+        >
+          i
+        </span>
+      </div>
+
+      <div className="flex justify-center items-center mb-4 gap-6">
+      <div className="flex items-center">
+          <div
+            className="w-4 h-4 rounded mr-2"
+            style={{ backgroundColor: colors.idle }}
+          ></div>
+          <span className="text-xs text-gray-600">Idle</span>
+        </div>
+        <div className="flex items-center">
+          <div
+            className="w-4 h-4 rounded mr-2"
+            style={{ backgroundColor: colors.scheduled }}
+          ></div>
+          <span className="text-xs text-gray-600">Scheduled</span>
+        </div>
+        <div className="flex items-center">
+          <div
+            className="w-4 h-4 rounded mr-2"
+            style={{ backgroundColor: colors.turnaround }}
+          ></div>
+          <span className="text-xs text-gray-600">Turnaround</span>
+        </div>
+      </div>
 
       <div
         className="relative w-full mb-1 text-xs text-gray-600 px-4 select-none"
@@ -69,10 +101,8 @@ export default function RotationTimeline({ rotation }: Props) {
       >
         {hourMarkers.map((marker, idx) => {
           let transformStyle = "-translate-x-1/2"
-          if (idx === 0)
-            transformStyle = "translate-x-0"
-          else if (idx === hourMarkers.length - 1)
-            transformStyle = "-translate-x-full"
+          if (idx === 0) transformStyle = "translate-x-0"
+          else if (idx === hourMarkers.length - 1) transformStyle = "-translate-x-full"
 
           return (
             <div
@@ -81,12 +111,12 @@ export default function RotationTimeline({ rotation }: Props) {
               style={{ left: `${marker.positionPercent}%` }}
             >
               <span>{marker.label}</span>
-              <span
+              <div
                 className="block mt-1"
                 style={{
                   width: "1px",
-                  height: "8px",
-                  backgroundColor: "#93848",
+                  height: "10px",
+                  backgroundColor: "#000",
                 }}
               />
             </div>
@@ -112,9 +142,9 @@ export default function RotationTimeline({ rotation }: Props) {
                 width: `${widthPercent}%`,
                 backgroundColor,
               }}
-              title={`${block.type.toUpperCase()} - ${formatSeconds(
+              title={`${block.type.toUpperCase()} - ${formatTime(
                 block.start
-              )} → ${formatSeconds(block.end)}`}
+              )} → ${formatTime(block.end)}`}
             />
           )
         })}

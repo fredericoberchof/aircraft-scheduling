@@ -1,36 +1,59 @@
-import { useState } from "react"
-import AircraftList from "../components/AircraftList"
-import FlightList from "../components/FlightList"
-import { Flight } from "../types/flight"
-import RotationTimeline from "../components/RotationTimeline"
+import { useState, useEffect } from "react"
+import { Flight } from "../types/aviationTypes"
 import { validateFlightAddition } from "../utils/rotationValidation"
 import { useSnackbar } from "../hooks/useSnackbar"
-import { useRotationStore } from "../hooks/useRotationStore"
-import DateNavigator from "../components/DateNavigator"
 import { format } from "date-fns"
+import {
+  saveToLocalStorage,
+  getFromLocalStorage,
+} from "../utils/localStorageUtils"
+import { calculateUtilization } from "../utils/calculateUtilization"
+import AircraftList from "../components/AircraftList"
+import FlightList from "../components/FlightList"
+import RotationTimeline from "../components/RotationTimeline"
+import DateNavigator from "../components/DateNavigator"
+import RotationList from "../components/RotationList"
+import EmptyState from "../components/EmptyState"
+import Header from "../components/Header"
+import Footer from "../components/Footer"
 
 function Home() {
-  const [selectedAircraftId, setSelectedAircraftId] = useState<string | null>(null)
+  const [selectedAircraftId, setSelectedAircraftId] = useState<string | null>(
+    () => getFromLocalStorage<string>("selectedAircraftId") || null
+  )
   const { showMessage } = useSnackbar()
-  const [date, setDate] = useState(new Date()) 
-  const [rotationsByDate, setRotationsByDate] = useState<Record<string, Record<string, Flight[]>>>({})
+  const [date, setDate] = useState(new Date())
+  const [rotationsByDate, setRotationsByDate] = useState<
+    Record<string, Record<string, Flight[]>>
+  >(
+    () =>
+      getFromLocalStorage<Record<string, Record<string, Flight[]>>>(
+        "rotationsByDate"
+      ) || {}
+  )
 
-  const dateKey = format(date, "yyyy-MM-dd") 
-  const { getRotation, updateRotation } = useRotationStore()
-
+  const dateKey = format(date, "yyyy-MM-dd")
   const rotation = selectedAircraftId
     ? rotationsByDate[dateKey]?.[selectedAircraftId] || []
     : []
 
+  useEffect(() => {
+    saveToLocalStorage("selectedAircraftId", selectedAircraftId || "")
+  }, [selectedAircraftId])
+
+  useEffect(() => {
+    saveToLocalStorage("rotationsByDate", rotationsByDate)
+  }, [rotationsByDate])
+
   const handleAddFlight = (flight: Flight) => {
     if (!selectedAircraftId) return
-
+  
     const error = validateFlightAddition(flight, rotation)
     if (error) {
       showMessage(error, "warning")
       return
     }
-
+  
     const updatedRotation = [...rotation, flight]
     setRotationsByDate((prev) => ({
       ...prev,
@@ -39,6 +62,15 @@ function Home() {
         [selectedAircraftId]: updatedRotation,
       },
     }))
+  
+    const utilization = calculateUtilization(updatedRotation)
+    const idleTime = 100 - utilization
+    if (idleTime > 50) {
+      showMessage(
+        `Warning: Aircraft has ${idleTime.toFixed(1)}% idle time. Consider optimizing the schedule.`,
+        "info"
+      )
+    }
   }
 
   const handleRemoveFlight = (flightIdent: string) => {
@@ -59,99 +91,50 @@ function Home() {
   }
 
   return (
-    <div className="flex h-screen bg-blue-50">
-      <AircraftList
-        selectedAircraftId={selectedAircraftId}
-        onSelect={setSelectedAircraftId}
-        getRotation={(aircraftId) =>
-          rotationsByDate[dateKey]?.[aircraftId] || []
-        }
-      />
+    <div className="flex flex-col h-screen overflow-hidden">
+      <header className="sticky top-0 z-10 shadow bg-white">
+        <Header />
+      </header>
 
-      <div
-        className={`flex-1 p-6 bg-white shadow-md ${
-          rotation.length > 0 ? "overflow-y-auto" : ""
-        }`}
-      >
-        {selectedAircraftId ? (
-          <>
-            <DateNavigator currentDate={date} onChange={handleDateChange} />
-            <h2 className="text-xl text-center font-bold mb-6 text-gray-800">
-              Rotation: {selectedAircraftId}
-            </h2>
+      <div className="flex flex-1 bg-blue-50 overflow-hidden">
+        <AircraftList
+          selectedAircraftId={selectedAircraftId}
+          onSelect={setSelectedAircraftId}
+          getRotation={(aircraftId) =>
+            rotationsByDate[dateKey]?.[aircraftId] || []
+          }
+        />
 
-            {rotation.length > 0 ? (
-              <>
-                <ul className="space-y-4 mb-6">
-                  {rotation.map((flight) => (
-                    <li
-                      key={flight.ident}
-                      className="border p-4 rounded-lg shadow-sm bg-gray-50 hover:bg-gray-100 transition-colors duration-200 flex items-center justify-between"
-                    >
-                      {/* Flight ID (left-aligned) */}
-                      <div className="min-w-[120px]">
-                        <div className="text-left">
-                          <span className="text-sm font-semibold text-gray-700">
-                            Flight:{" "}
-                          </span>
-                          <span className="text-sm font-bold text-gray-900">
-                            {flight.ident}
-                          </span>
-                        </div>
-                      </div>
+        <div className={`flex-1 p-6 bg-white shadow-md overflow-y-auto`}>
+          {selectedAircraftId ? (
+            <>
+              <DateNavigator currentDate={date} onChange={handleDateChange} />
+              <h2 className="text-xl text-center mb-6 font-semibold text-gray-700">
+                Rotation: {selectedAircraftId}
+              </h2>
 
-                      <div className="flex-1 mx-4">
-                        <div className="flex justify-center items-center space-x-8 mb-1">
-                          <div className="text-center">
-                            <div className="text-base font-medium text-gray-800">
-                              {flight.origin}
-                            </div>
-                            <div className="text-xs text-gray-600 mt-1">
-                              {flight.readable_departure}
-                            </div>
-                          </div>
+              {rotation.length > 0 ? (
+                <>
+                  <RotationList
+                    rotation={rotation}
+                    onRemoveFlight={handleRemoveFlight}
+                  />
+                  <RotationTimeline rotation={rotation} />
+                </>
+              ) : (
+                <EmptyState message="No flights assigned yet." />
+              )}
+            </>
+          ) : (
+            <EmptyState message="Select an aircraft to begin scheduling." />
+          )}
+        </div>
 
-                          <div className="text-gray-500">→</div>
-
-                          <div className="text-center">
-                            <div className="text-base font-medium text-gray-800">
-                              {flight.destination}
-                            </div>
-                            <div className="text-xs text-gray-600 mt-1">
-                              {flight.readable_arrival}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <button
-                        onClick={() => handleRemoveFlight(flight.ident)}
-                        className="text-red-600 hover:text-white text-xs border border-red-300 hover:border-red-600 px-3 py-1 rounded hover:bg-red-600 transition-colors duration-200 whitespace-nowrap"
-                      >
-                        Remove
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-
-                <RotationTimeline rotation={rotation} />
-              </>
-            ) : (
-              <div className="flex h-full items-center justify-center">
-                <p className="text-gray-600">No flights assigned yet.</p>
-              </div>
-            )}
-          </>
-        ) : (
-          <div className="flex h-full items-center justify-center">
-            <p className="text-gray-600 text-lg">
-              Select an aircraft to begin scheduling.
-            </p>
-          </div>
-        )}
+        <div className="max-w-sm border-l overflow-y-auto h-full">
+          <FlightList onAddFlight={handleAddFlight} rotation={rotation || []} />
+        </div>
       </div>
-
-      <FlightList onAddFlight={handleAddFlight} rotation={rotation || []} />
+      <Footer />
     </div>
   )
 }
