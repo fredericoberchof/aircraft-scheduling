@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import './index.css'
+import '../src/styles/index.css'
 import Home from './pages/Home'
 import Snackbar from './components/common/Snackbar'
 

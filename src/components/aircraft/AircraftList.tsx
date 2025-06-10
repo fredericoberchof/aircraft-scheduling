@@ -43,9 +43,9 @@ export default function AircraftList({ selectedAircraftId, onSelect, getRotation
       </div>
 
       {loading ? (
-        <p className="text-gray-500 text-sm">Loading...</p>
+        <p className="text-gray-500 text-center text-sm">Loading...</p>
       ) : filteredAircrafts.length === 0 ? (
-        <p className="text-gray-500 text-sm">No aircrafts found.</p>
+        <p className="text-gray-500 text-center text-sm">No aircrafts found.</p>
       ) : (
         <ul className="space-y-3">
           {filteredAircrafts.map((aircraft) => {

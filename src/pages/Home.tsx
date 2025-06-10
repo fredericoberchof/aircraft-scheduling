@@ -1,10 +1,7 @@
 import { useState } from "react"
-import { Flight } from "../types/aviationTypes"
-import { validateFlightAddition } from "../utils/rotationValidation"
-import { useSnackbar } from "../hooks/useSnackbar"
 import { format } from "date-fns"
-import { calculateUtilization } from "../utils/calculateUtilization"
 import { useRotationStore } from "../hooks/useRotationStore"
+import { useRotationActions } from "../hooks/useRotationActions"
 import AircraftList from "../components/aircraft/AircraftList"
 import FlightList from "../components/flight/FlightList"
 import RotationTimeline from "../components/flight/RotationTimeline"
@@ -15,48 +12,16 @@ import Header from "../components/layout/Header"
 import Footer from "../components/layout/Footer"
 
 function Home() {
-    const {
-      selectedAircraftId,
-      setSelectedAircraftId,
-      getRotation,
-      updateRotation,
-    } = useRotationStore()
-    const { showMessage } = useSnackbar()
-    const [date, setDate] = useState(new Date())
-
+  const [date, setDate] = useState(new Date())
   const dateKey = format(date, "yyyy-MM-dd")
+  const { handleAddFlight, handleRemoveFlight } = useRotationActions(date)
+
+  const { selectedAircraftId, setSelectedAircraftId, getRotation } =
+    useRotationStore()
+
   const rotation = selectedAircraftId
     ? getRotation(dateKey, selectedAircraftId)
     : []
-
-  const handleAddFlight = (flight: Flight) => {
-    if (!selectedAircraftId) return
-
-    const error = validateFlightAddition(flight, rotation)
-    if (error) {
-      showMessage(error, "warning")
-      return
-    }
-
-    const updatedRotation = [...rotation, flight]
-    updateRotation(dateKey, selectedAircraftId, updatedRotation)
-
-    const utilization = calculateUtilization(updatedRotation)
-    const idleTime = 100 - utilization
-    if (idleTime > 50) {
-      showMessage(
-        `Warning: Aircraft has ${idleTime.toFixed(1)}% idle time. Consider optimizing the schedule.`,
-        "info"
-      )
-    }
-  }
-
-  const handleRemoveFlight = (flightIdent: string) => {
-    if (!selectedAircraftId) return
-
-    const updatedRotation = rotation.filter((f) => f.ident !== flightIdent)
-    updateRotation(dateKey, selectedAircraftId, updatedRotation)
-  }
 
   const handleDateChange = (newDate: Date) => {
     setDate(newDate)
@@ -72,9 +37,7 @@ function Home() {
         <AircraftList
           selectedAircraftId={selectedAircraftId}
           onSelect={setSelectedAircraftId}
-          getRotation={(aircraftId) =>
-            getRotation(dateKey, aircraftId)
-          }
+          getRotation={(aircraftId) => getRotation(dateKey, aircraftId)}
         />
 
         <div className={`flex-1 p-6 bg-white shadow-md overflow-y-auto`}>
