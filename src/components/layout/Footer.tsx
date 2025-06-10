@@ -2,8 +2,8 @@ import React from "react"
 
 const Footer: React.FC = () => {
   return (
-    <footer className="w-full bg-gradient-to-r from-blue-600 to-indigo-700 py-4 px-6 shadow-inner mt-auto">
-      <div className="container mx-auto flex flex-col md:flex-row items-center justify-between text-white text-sm">
+    <footer className="w-full bg-gradient-to-r from-blue-600 to-indigo-700 py-4 px-4 md:px-6 shadow-inner mt-auto">
+      <div className="container mx-auto flex flex-col md:flex-row items-center justify-between text-white text-xs md:text-sm">
         <span>
           &copy; {new Date().getFullYear()} Aircraft Scheduling. All rights reserved.
         </span>
