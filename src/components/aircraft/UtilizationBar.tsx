@@ -14,6 +14,7 @@ const UtilizationBar: React.FC<UtilizationBarProps> = ({ rotation }) => {
       <div
         className="absolute top-0 left-0 h-full bg-blue-600 rounded-lg shadow-md transition-all duration-500"
         style={{ width: `${utilization}%` }}
+        data-testid="utilization-bar"
       />
 
       <div className="absolute inset-0 flex items-center justify-center text-sm font-medium text-white">
