@@ -21,7 +21,7 @@ const FlightList: React.FC<Props> = ({ onAddFlight, rotation = [] }) => {
   )
 
   return (
-    <div className="p-4 border-l border-gray-300 w-64 h-full overflow-y-auto bg-white">
+    <div className="p-4 border-l border-gray-300 w-full sm:w-64 h-auto sm:h-full overflow-y-auto bg-white">
       <h2 className="text-lg text-center font-bold mb-4 text-gray-800">
         Flights
       </h2>
@@ -30,7 +30,7 @@ const FlightList: React.FC<Props> = ({ onAddFlight, rotation = [] }) => {
           value={search}
           onChange={setSearch}
           placeholder="Search..."
-          className="mb-4"
+          className="mb-4 w-full"
         />
       </div>
       {loading ? (
@@ -56,29 +56,22 @@ const FlightList: React.FC<Props> = ({ onAddFlight, rotation = [] }) => {
                 <div className="text-center mb-2">
                   <div className="text-sm font-medium">{flight.ident}</div>
                 </div>
-                <div className="flex justify-between">
+                <div className="flex justify-between text-xs">
                   <div className="text-left">
-                    <div className="text-xs">{flight.origin}</div>
-                    <div className="text-xs mt-1">
+                    <div>{flight.origin}</div>
+                    <div className="mt-1">
                       {formatTime(flight.departuretime)}
                     </div>
                   </div>
                   <div className="mx-2 text-gray-500">→</div>
                   <div className="text-right">
-                    <div className="text-xs">{flight.destination}</div>
-                    <div className="text-xs mt-1">
-                      {formatTime(flight.arrivaltime)}
-                    </div>
+                    <div>{flight.destination}</div>
+                    <div className="mt-1">{formatTime(flight.arrivaltime)}</div>
                   </div>
                 </div>
               </li>
             )
           })}
-          {filteredFlights.length === 0 && (
-            <li className="text-center text-gray-400 text-sm">
-              No flights found.
-            </li>
-          )}
         </ul>
       )}
     </div>
