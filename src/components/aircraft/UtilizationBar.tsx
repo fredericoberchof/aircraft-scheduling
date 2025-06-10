@@ -17,7 +17,10 @@ const UtilizationBar: React.FC<UtilizationBarProps> = ({ rotation }) => {
         data-testid="utilization-bar"
       />
 
-      <div className="absolute inset-0 flex items-center justify-center text-sm font-medium text-white">
+      <div
+        className="absolute inset-0 flex items-center justify-center text-sm font-medium text-white"
+        title="Aircraft utilization: the percentage of the day this aircraft is scheduled for flights."
+      >
         {utilization.toFixed(1)}%
       </div>
     </div>
