@@ -4,6 +4,17 @@ A modern web application for managing aircraft rotations and flight assignments,
 
 ---
 
+
+## 🌐 Live Demo
+
+You can access the live version of the app here:  
+👉 https://fredrico-berchof-aircraft-scheduling.netlify.app/
+
+Note: This version is for demonstration purposes and is based on the current submitted code.
+
+---
+
+
 ## 📌 Overview
 
 Aircraft Scheduling allows users to:
@@ -50,14 +61,14 @@ Aircraft Scheduling allows users to:
 
 ## 📁 Project Structure
 
-- **src/components/** – All UI components (aircraft list, flight list, timeline, etc.)
-- **src/hooks/** – Custom React hooks for state, actions, and data fetching.
-- **src/utils/** – Business logic, validation, and utility functions.
-- **src/pages/** – Main application page.
-- **src/styles/** – Tailwind and global CSS.
-- **src/types/** – TypeScript type definitions.
-- **src/services/** – API abstraction layer.
-- **src/tests/** – Unit and integration tests.
+- `src/components/` – UI components.
+- `src/hooks/` – Custom React hooks for state, actions, and logic.
+- `src/utils/` – Business rules and utility functions.
+- `src/pages/` – Main application entry point.
+- `src/styles/` – Tailwind and global styles.
+- `src/types/` – TypeScript type definitions.
+- `src/services/` – API abstraction layer.
+- `src/tests/` – Unit and integration test files.
 
 ---
 
@@ -95,6 +106,31 @@ npm run dev
 ```bash
 npm test
 ```
+
+---
+
+## 📌 Considerations and Trade-offs
+
+During the development of this challenge, I focused on:
+
+- Implementing the core **business rules** clearly and reliably.
+- Creating a **clean and user-friendly UI** using Tailwind.
+- Ensuring **persistent state** using Zustand and localStorage.
+- Providing **helpful user feedback** via snackbars for rule enforcement.
+
+### Areas for Improvement (if given more time):
+
+- 🔄 **Responsiveness**: The layout is currently optimized for desktop. I would improve mobile/tablet responsiveness in a future iteration.
+- 🧩 **Drag and Drop**: I would enhance usability by implementing drag-and-drop for managing flight assignments.
+- 🧪 **More Test Coverage**: I included tests for some components, hooks, and business logic to demonstrate test strategy, but would aim for full test coverage in a production scenario.
+
+These trade-offs were made to prioritize clarity, correctness, and core feature completeness within the time constraints.
+
+---
+
+
+
+
 
 
 
