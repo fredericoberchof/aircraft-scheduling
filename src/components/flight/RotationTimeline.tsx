@@ -1,6 +1,6 @@
-import { colors } from "../styles/colors"
-import { Flight } from "../types/aviationTypes"
-import { formatTime } from "../utils/formatTime"
+import { colors } from "../../styles/colors"
+import { Flight } from "../../types/aviationTypes"
+import { formatTime } from "../../utils/formatTime"
 
 type Props = {
   rotation: Flight[]

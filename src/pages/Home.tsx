@@ -1,90 +1,27 @@
-import { useState, useEffect } from "react"
-import { Flight } from "../types/aviationTypes"
-import { validateFlightAddition } from "../utils/rotationValidation"
-import { useSnackbar } from "../hooks/useSnackbar"
+import { useState } from "react"
 import { format } from "date-fns"
-import {
-  saveToLocalStorage,
-  getFromLocalStorage,
-} from "../utils/localStorageUtils"
-import { calculateUtilization } from "../utils/calculateUtilization"
-import AircraftList from "../components/AircraftList"
-import FlightList from "../components/FlightList"
-import RotationTimeline from "../components/RotationTimeline"
-import DateNavigator from "../components/DateNavigator"
-import RotationList from "../components/RotationList"
-import EmptyState from "../components/EmptyState"
-import Header from "../components/Header"
-import Footer from "../components/Footer"
+import { useRotationStore } from "../hooks/useRotationStore"
+import { useRotationActions } from "../hooks/useRotationActions"
+import AircraftList from "../components/aircraft/AircraftList"
+import FlightList from "../components/flight/FlightList"
+import RotationTimeline from "../components/flight/RotationTimeline"
+import DateNavigator from "../components/common/DateNavigator"
+import RotationList from "../components/flight/RotationList"
+import EmptyState from "../components/common/EmptyState"
+import Header from "../components/layout/Header"
+import Footer from "../components/layout/Footer"
 
 function Home() {
-  const [selectedAircraftId, setSelectedAircraftId] = useState<string | null>(
-    () => getFromLocalStorage<string>("selectedAircraftId") || null
-  )
-  const { showMessage } = useSnackbar()
   const [date, setDate] = useState(new Date())
-  const [rotationsByDate, setRotationsByDate] = useState<
-    Record<string, Record<string, Flight[]>>
-  >(
-    () =>
-      getFromLocalStorage<Record<string, Record<string, Flight[]>>>(
-        "rotationsByDate"
-      ) || {}
-  )
-
   const dateKey = format(date, "yyyy-MM-dd")
+  const { handleAddFlight, handleRemoveFlight } = useRotationActions(date)
+
+  const { selectedAircraftId, setSelectedAircraftId, getRotation } =
+    useRotationStore()
+
   const rotation = selectedAircraftId
-    ? rotationsByDate[dateKey]?.[selectedAircraftId] || []
+    ? getRotation(dateKey, selectedAircraftId)
     : []
-
-  useEffect(() => {
-    saveToLocalStorage("selectedAircraftId", selectedAircraftId || "")
-  }, [selectedAircraftId])
-
-  useEffect(() => {
-    saveToLocalStorage("rotationsByDate", rotationsByDate)
-  }, [rotationsByDate])
-
-  const handleAddFlight = (flight: Flight) => {
-    if (!selectedAircraftId) return
-  
-    const error = validateFlightAddition(flight, rotation)
-    if (error) {
-      showMessage(error, "warning")
-      return
-    }
-  
-    const updatedRotation = [...rotation, flight]
-    setRotationsByDate((prev) => ({
-      ...prev,
-      [dateKey]: {
-        ...prev[dateKey],
-        [selectedAircraftId]: updatedRotation,
-      },
-    }))
-  
-    const utilization = calculateUtilization(updatedRotation)
-    const idleTime = 100 - utilization
-    if (idleTime > 50) {
-      showMessage(
-        `Warning: Aircraft has ${idleTime.toFixed(1)}% idle time. Consider optimizing the schedule.`,
-        "info"
-      )
-    }
-  }
-
-  const handleRemoveFlight = (flightIdent: string) => {
-    if (!selectedAircraftId) return
-
-    const updatedRotation = rotation.filter((f) => f.ident !== flightIdent)
-    setRotationsByDate((prev) => ({
-      ...prev,
-      [dateKey]: {
-        ...prev[dateKey],
-        [selectedAircraftId]: updatedRotation,
-      },
-    }))
-  }
 
   const handleDateChange = (newDate: Date) => {
     setDate(newDate)
@@ -100,9 +37,7 @@ function Home() {
         <AircraftList
           selectedAircraftId={selectedAircraftId}
           onSelect={setSelectedAircraftId}
-          getRotation={(aircraftId) =>
-            rotationsByDate[dateKey]?.[aircraftId] || []
-          }
+          getRotation={(aircraftId) => getRotation(dateKey, aircraftId)}
         />
 
         <div className={`flex-1 p-6 bg-white shadow-md overflow-y-auto`}>

@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react"
-import { Aircraft, Flight } from "../types/aviationTypes"
-import { getAircrafts } from "../services/api"
-import { calculateUtilization } from "../utils/calculateUtilization"
+import { Aircraft, Flight } from "../../types/aviationTypes"
+import { getAircrafts } from "../../services/api"
 import UtilizationBar from "./UtilizationBar"
-import SearchInput from "./SearchInput"
+import SearchInput from "../common/SearchInput"
 
 type Props = {
   selectedAircraftId: string | null
@@ -44,9 +43,9 @@ export default function AircraftList({ selectedAircraftId, onSelect, getRotation
       </div>
 
       {loading ? (
-        <p className="text-gray-500 text-sm">Loading...</p>
+        <p className="text-gray-500 text-center text-sm">Loading...</p>
       ) : filteredAircrafts.length === 0 ? (
-        <p className="text-gray-500 text-sm">No aircrafts found.</p>
+        <p className="text-gray-500 text-center text-sm">No aircrafts found.</p>
       ) : (
         <ul className="space-y-3">
           {filteredAircrafts.map((aircraft) => {

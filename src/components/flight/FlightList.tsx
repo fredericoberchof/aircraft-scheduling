@@ -1,8 +1,8 @@
 import React, { useState } from "react"
-import { useFlights } from "../hooks/useFlights"
-import { Flight } from "../types/aviationTypes"
-import { formatTime } from "../utils/formatTime"
-import SearchInput from "./SearchInput"
+import { useFlights } from "../../hooks/useFlights"
+import { Flight } from "../../types/aviationTypes"
+import { formatTime } from "../../utils/formatTime"
+import SearchInput from "../common/SearchInput"
 
 interface Props {
   onAddFlight: (flight: Flight) => void
@@ -34,9 +34,9 @@ const FlightList: React.FC<Props> = ({ onAddFlight, rotation = [] }) => {
         />
       </div>
       {loading ? (
-        <p className="text-gray-500 text-sm">Loading...</p>
+        <p className="text-gray-500 text-center text-sm">Loading...</p>
       ) : filteredFlights.length === 0 ? (
-        <p className="text-gray-500 text-sm">No flights found.</p>
+        <p className="text-gray-500 text-center text-sm">No flights found.</p>
       ) : (
         <ul className="space-y-3">
           {filteredFlights.map((flight) => {
